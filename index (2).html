@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A digital portfolio exploring AI in financial management through Power BI, algorithmic fairness and generative AI.">
+<title>AI in Financial Management | Digital Portfolio</title>
+<style>
+:root{
+ --ink:#182235;--muted:#65738a;--paper:#f5f7fb;--white:#fff;--navy:#111c32;
+ --blue:#4263eb;--cyan:#21b6c7;--violet:#8267d8;--line:#e4e9f2;
+ --softblue:#edf2ff;--softcyan:#e8f8fa;--softviolet:#f2efff;--green:#16856b;
+ --shadow:0 16px 45px rgba(24,34,53,.08);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.72 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+a{color:#3157d5;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{width:min(1120px,calc(100% - 40px));margin:auto}
+.hero{background:radial-gradient(circle at 80% 20%,rgba(33,182,199,.25),transparent 27%),radial-gradient(circle at 12% 90%,rgba(130,103,216,.25),transparent 30%),linear-gradient(125deg,#111c32,#1c3153 62%,#263f69);color:white;padding:68px 0 58px;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;width:420px;height:420px;border:1px solid rgba(255,255,255,.13);border-radius:50%;right:-120px;bottom:-280px;box-shadow:0 0 0 45px rgba(255,255,255,.025),0 0 0 90px rgba(255,255,255,.02)}
+.eyebrow{text-transform:uppercase;letter-spacing:.16em;font-size:.76rem;font-weight:800;color:#a9dce7}
+.hero h1{font-size:clamp(2.5rem,6vw,4.8rem);line-height:1.04;letter-spacing:-.045em;max-width:850px;margin:18px 0}
+.hero p{font-size:1.12rem;color:#d8e3f3;max-width:740px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.pill{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);padding:7px 12px;border-radius:30px;font-size:.85rem;color:#edf4ff}
+.hero-graphic{position:absolute;right:5%;top:22%;width:210px;opacity:.8}
+.nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;gap:24px;align-items:center;overflow-x:auto;white-space:nowrap;padding:14px 0}
+.nav a{font-size:.88rem;font-weight:750;color:#35445e}
+main{padding:34px 0 70px}
+.intro-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:22px}
+.card{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:var(--shadow);margin:0 0 22px}
+.card h2{font-size:1.8rem;line-height:1.2;letter-spacing:-.025em;margin:0 0 14px;color:var(--navy)}
+.card h3{font-size:1.1rem;color:#233a68;margin:24px 0 8px}
+.card p{margin:10px 0}
+.kicker{font-size:.76rem;text-transform:uppercase;letter-spacing:.14em;font-weight:850;color:var(--blue)}
+.lead{font-size:1.08rem;color:#43516a}
+.statbox{background:linear-gradient(145deg,#edf2ff,#f7f8ff);border-radius:16px;padding:20px}
+.statbox strong{display:block;font-size:2rem;line-height:1.2;color:#2746b9}
+.statbox span{font-size:.88rem;color:var(--muted)}
+.section-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin:40px 0 16px}
+.section-head h2{font-size:2rem;letter-spacing:-.035em;margin:5px 0;color:var(--navy)}
+.section-number{font-size:3rem;font-weight:900;color:#e1e7f5;line-height:1}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.tag{background:var(--softblue);color:#3a55b5;border-radius:30px;padding:5px 10px;font-size:.78rem;font-weight:750}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.panel{border:1px solid var(--line);border-radius:16px;padding:18px;background:#fff}
+.panel h3{margin:0 0 7px}
+.panel p{font-size:.94rem;color:#536179}
+.callout{border-left:4px solid var(--cyan);background:var(--softcyan);padding:14px 17px;border-radius:0 12px 12px 0;margin:18px 0;color:#284e59}
+.warning{border-left-color:#d69a36;background:#fff7e8;color:#6a4b1b}
+.visual{background:#101b30;color:#eef4ff;border-radius:18px;padding:20px;margin:22px 0;overflow:hidden}
+.visual-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}
+.visual-head strong{font-size:1rem}
+.visual-head span{font-size:.75rem;color:#aebbd0}
+.dashboard{background:#f6f8fc;color:#1c2940;border-radius:13px;padding:16px}
+.dash-top{display:flex;justify-content:space-between;align-items:center;font-weight:800;margin-bottom:12px}
+.dash-top small{font-weight:600;color:#748098}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.kpi{background:white;border:1px solid #e5eaf2;border-radius:10px;padding:11px}
+.kpi small{display:block;color:#738097;font-size:.69rem}
+.kpi b{font-size:1.2rem}
+.dash-bottom{display:grid;grid-template-columns:1.4fr .8fr;gap:10px;margin-top:10px}
+.chartbox,.insightbox{background:white;border:1px solid #e5eaf2;border-radius:10px;padding:12px}
+.chartbox h4,.insightbox h4{margin:0 0 8px;font-size:.82rem}
+.chartlabels{display:flex;justify-content:space-around;color:#748098;font-size:.68rem}
+.bars{height:125px;display:flex;align-items:flex-end;justify-content:space-around;border-bottom:1px solid #dce3ee;padding:0 8px}
+.bar-group{display:flex;align-items:flex-end;gap:4px;height:100%;position:relative}
+.bar{width:13px;border-radius:4px 4px 0 0;background:#4263eb}
+.bar.alt{background:#21b6c7}
+.insightbox p{font-size:.75rem;line-height:1.45;color:#57657b}
+.insightbox .insight{background:#edf2ff;padding:8px;border-radius:8px;color:#304a9b;font-weight:700}
+.caption{font-size:.82rem;color:#aebbd0;margin:10px 2px 0}
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;position:relative;margin:22px 0}
+.time{position:relative;background:#f6f8fc;border:1px solid #e3e8f1;border-radius:12px;padding:15px;color:#26344a}
+.time b{display:block;color:#3157d5;margin-bottom:6px}
+.time small{color:#617087}
+.matrix{width:100%;border-collapse:collapse;font-size:.9rem;margin:15px 0}
+.matrix th,.matrix td{border-bottom:1px solid var(--line);padding:12px;text-align:left;vertical-align:top}
+.matrix th{color:#3b4c6b;background:#f7f9fc}
+.flow{display:flex;align-items:stretch;gap:8px;margin:18px 0;flex-wrap:wrap}
+.flow .step{flex:1;min-width:140px;background:#edf2ff;border:1px solid #dce5ff;border-radius:12px;padding:14px;text-align:center;color:#2946a1;font-weight:750}
+.flow .arrow{align-self:center;color:#7d8aa0;font-size:1.4rem}
+.risk{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.risk div{padding:14px;border-radius:12px;background:#f7f8fc;border:1px solid var(--line)}
+.risk b{display:block;color:#243c71}
+.ref-list li{margin:10px 0}
+.ref-list{padding-left:20px}
+.ref-list a{font-weight:700}
+.ref-note{font-size:.82rem;color:var(--muted)}
+footer{background:#111c32;color:#cbd6e7;padding:28px 0;text-align:center}
+footer p{margin:5px}
+@media(max-width:800px){.intro-grid,.two{grid-template-columns:1fr}.three{grid-template-columns:1fr}.hero-graphic{display:none}.timeline{grid-template-columns:1fr 1fr}.dash-bottom{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}.section-head{align-items:center}}
+@media(max-width:520px){.wrap{width:min(100% - 26px,1120px)}.card{padding:20px}.timeline{grid-template-columns:1fr}.hero{padding:50px 0}.nav .wrap{gap:17px}.matrix{font-size:.78rem}.matrix th,.matrix td{padding:8px}}
+</style>
+</head>
+<body>
+<header class="hero">
+ <div class="wrap">
+  <div class="eyebrow">University of Hertfordshire · MRes Digital Management</div>
+  <h1>Artificial Intelligence<br>in Financial Management</h1>
+  <p>A critical digital portfolio exploring how AI and business intelligence can improve financial decision-making—and why fairness, data quality and human accountability still matter.</p>
+  <div class="hero-meta">
+   <span class="pill">Assessment 3 · Individual Digital Portfolio</span><span class="pill">Essentials of AI in Business and Digital Management</span><span class="pill">Academic year 2026–27</span>
+  </div>
+  <div class="hero-meta"><span class="pill">Student: [Add your name]</span><span class="pill">Student ID: [Add your ID]</span></div>
+ </div>
+ <svg class="hero-graphic" viewBox="0 0 220 220" aria-hidden="true"><circle cx="110" cy="110" r="84" fill="none" stroke="#8de1e6" stroke-width="1" opacity=".55"/><circle cx="110" cy="110" r="60" fill="none" stroke="#b4a5ff" stroke-width="1" opacity=".8"/><path d="M42 145 L78 112 L105 126 L154 62 L184 82" fill="none" stroke="#8de1e6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="78" cy="112" r="6" fill="#8de1e6"/><circle cx="154" cy="62" r="6" fill="#b4a5ff"/><circle cx="184" cy="82" r="6" fill="#8de1e6"/></svg>
+</header>
+<nav class="nav"><div class="wrap">
+ <a href="#overview">Overview</a><a href="#entry1">01 · Power BI</a><a href="#entry2">02 · Apple Card</a><a href="#entry3">03 · GenAI</a><a href="#reflection">Reflection</a><a href="#evidence">Evidence</a>
+</div></nav>
+<main class="wrap">
+ <section id="overview" class="intro-grid">
+  <article class="card">
+   <div class="kicker">Portfolio introduction</div>
+   <h2>From financial data to responsible decisions</h2>
+   <p class="lead">Financial management is being reshaped by data analytics, automation and artificial intelligence. These technologies can help organisations understand performance, anticipate change and communicate financial information.</p>
+   <p>This portfolio examines three connected perspectives. Entry 1 applies Microsoft Power BI to a retail financial-management problem. Entry 2 evaluates the Apple Card credit-limit controversy as a case about algorithmic decision-making, transparency and consumer trust. Entry 3 assesses the strategic potential and risks of generative AI in finance.</p>
+   <p>The portfolio argues that digital tools create value only when organisations combine them with reliable data, employee capability, governance and informed human judgement. AI should support responsible decisions—not become an unquestioned decision-maker.</p>
+   <div class="tags"><span class="tag">Business intelligence</span><span class="tag">Financial forecasting</span><span class="tag">Algorithmic fairness</span><span class="tag">Generative AI</span><span class="tag">Governance</span></div>
+  </article>
+  <aside class="card">
+   <div class="kicker">Portfolio at a glance</div>
+   <div class="statbox"><strong>3 + 1</strong><span>Three analytical entries and one reflective summary</span></div>
+   <div class="statbox" style="margin-top:12px;background:linear-gradient(145deg,#e8f8fa,#f5fcfd)"><strong>300–400</strong><span>Approximate words for each portfolio entry</span></div>
+   <div class="statbox" style="margin-top:12px;background:linear-gradient(145deg,#f2efff,#faf9ff)"><strong>500</strong><span>Approximate words for the final reflection</span></div>
+  </aside>
+ </section>
+
+ <div class="section-head"><div><div class="kicker">Entry 01 · Tool or concept application</div><h2 id="entry1">Power BI for financial decision-making</h2></div><div class="section-number">01</div></div>
+ <section class="card">
+  <p class="lead">Business question: How can an AI or digital management tool solve a real business problem?</p>
+  <h3>Business problem and tool selection</h3>
+  <p>A medium-sized retailer may store sales, operating costs and stock information in separate spreadsheets or business systems. Managers can struggle to see whether falling profit is caused by lower sales, rising costs or changes in product mix. Delayed reporting also makes it harder to respond quickly. Microsoft Power BI is a business analytics platform that connects, models and visualises data through interactive reports and dashboards. It is suitable for this scenario because managers can explore financial information in one place rather than relying only on disconnected spreadsheets.</p>
+  <h3>Application and business value</h3>
+  <p>For this example, the retailer combines monthly sales and expense data. A dashboard displays revenue, expenses, gross profit and product-level performance. Managers can filter by month or product category, compare actual results with budget and investigate unusual movements. If the business has sufficient historical data, an appropriate forecasting method can support planning; a forecast should be treated as an estimate, not a guaranteed outcome. The mock-up below uses fictional figures to demonstrate the kind of management view that could be built in Power BI.</p>
+  <div class="visual">
+   <div class="visual-head"><strong>Retail finance dashboard · illustrative mock-up</strong><span>ARTEFACT 1A · NOT A LIVE POWER BI SCREENSHOT</span></div>
+   <div class="dashboard">
+    <div class="dash-top">Monthly performance overview <small>Example retailer · GBP (£)</small></div>
+    <div class="kpis">
+     <div class="kpi"><small>Revenue</small><b>£50.0k</b></div><div class="kpi"><small>Operating costs</small><b>£32.0k</b></div><div class="kpi"><small>Operating surplus*</small><b>£18.0k</b></div><div class="kpi"><small>Next-month estimate</small><b>£55.0k</b></div>
+    </div>
+    <div class="dash-bottom">
+     <div class="chartbox"><h4>Revenue and expenses by month (£000s)</h4>
+      <div class="bars">
+       <div class="bar-group"><div class="bar" style="height:67%"></div><div class="bar alt" style="height:47%"></div></div>
+       <div class="bar-group"><div class="bar" style="height:75%"></div><div class="bar alt" style="height:51%"></div></div>
+       <div class="bar-group"><div class="bar" style="height:83%"></div><div class="bar alt" style="height:55%"></div></div>
+       <div class="bar-group"><div class="bar" style="height:91%"></div><div class="bar alt" style="height:59%"></div></div>
+      </div><div class="chartlabels"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr*</span></div>
+      <div class="chartlabels"><span style="color:#4263eb">■ Revenue</span><span style="color:#1696a7">■ Expenses</span></div>
+     </div>
+     <div class="insightbox"><h4>Manager's attention</h4><p class="insight">Costs are increasing, but revenue is rising faster in this example.</p><p>Check whether the pattern continues and investigate cost categories before changing budgets.</p><p>*April is a planning estimate.</p></div>
+    </div>
+   </div>
+   <div class="caption">Figure 1. Original dashboard mock-up created for this portfolio. All figures are illustrative, not actual company data. “Operating surplus” here is a simplified revenue-minus-expenses example, not a full accounting profit measure.</div>
+  </div>
+  <h3>Critical evaluation</h3>
+  <p>Power BI can reduce repetitive reporting, improve visibility and help managers ask more focused questions. Its filters and visual comparisons can make trends easier to identify. However, a dashboard does not prove why a trend occurred. Inaccurate, incomplete or inconsistent data can create misleading conclusions; integration, licences, staff training and maintenance also require resources. A forecast may perform poorly when customer behaviour or market conditions change. Managers should validate data, investigate the causes behind patterns and combine analytics with operational knowledge. Power BI is primarily a business intelligence platform; AI-enabled capabilities such as Copilot or natural-language querying depend on the relevant Microsoft product configuration and organisational access.</p>
+  <h3>Conclusion</h3>
+  <p>Power BI can strengthen financial control and evidence-based decision-making, but business value depends on data governance, employee skills and managerial interpretation. The tool informs a decision; it does not make the decision responsibly on its own.</p>
+  <div class="callout"><b>Artefact explanation:</b> Figure 1 demonstrates how financial indicators can be brought together for a manager. It supports the argument about visibility and comparison; it does not claim to be a screenshot from a live Power BI account.</div>
+ </section>
+
+ <div class="section-head"><div><div class="kicker">Entry 02 · Case-based analysis</div><h2 id="entry2">Apple Card: algorithmic decisions and fairness</h2></div><div class="section-number">02</div></div>
+ <section class="card">
+  <p class="lead">Business question: What can businesses learn from an AI-related success, failure or ethical controversy?</p>
+  <h3>What happened?</h3>
+  <p>In November 2019, public complaints raised concerns that women applying for the Apple Card were receiving lower credit limits than men. The card was offered by Apple and underwritten by Goldman Sachs. The allegations prompted debate about the use of algorithms and machine learning in credit decisions, including whether customers could understand the factors behind an outcome. The New York State Department of Financial Services (NYDFS) investigated the complaints. Its March 2021 report stated that the investigation did not find evidence of unlawful discrimination against women in the underwriting process. The distinction matters: this was a serious public controversy and regulatory investigation, but unlawful discrimination was not established by the regulator.</p>
+  <h3>Business and ethical implications</h3>
+  <p>The case illustrates how limited explanations can damage confidence even when a financial institution believes its model follows policy. Credit decisions affect access to financial services and can have wider consequences for consumers. If a customer cannot understand or challenge an outcome, the organisation may face reputational harm, complaints and regulatory scrutiny. The issue is not simply whether an algorithm is technically accurate; organisations must also consider fairness, explainability, accountability and the quality of customer communication.</p>
+  <div class="visual">
+   <div class="visual-head"><strong>Case timeline and learning points</strong><span>ARTEFACT 2A · CASE SUMMARY</span></div>
+   <div class="timeline">
+    <div class="time"><b>Nov 2019</b><small>Public complaints allege differences in credit limits and raise questions about fairness.</small></div>
+    <div class="time"><b>Regulatory review</b><small>NYDFS examines applicant data, documents and complaints.</small></div>
+    <div class="time"><b>Mar 2021</b><small>NYDFS reports no evidence of unlawful discrimination in its investigation.</small></div>
+    <div class="time"><b>Business lesson</b><small>Explain decisions, review outcomes and make complaint routes accessible.</small></div>
+   </div>
+   <div class="caption">Figure 2. Original timeline based on the NYDFS investigation report. It separates the initial allegations from the regulator’s findings.</div>
+  </div>
+  <h3>What should organisations do differently?</h3>
+  <p>Financial organisations should document the factors used in decision systems, test outcomes for unexpected patterns across relevant customer groups and make explanations understandable. They should provide clear routes for customers to ask questions or request a review, train staff to handle complaints and assign senior responsibility for model oversight. Human review should be meaningful rather than a rubber stamp. These measures do not guarantee that every outcome will be fair, but they make problems more visible and create accountability.</p>
+  <h3>Conclusion</h3>
+  <p>The Apple Card controversy shows that trust is part of responsible digital finance. Organisations need evidence-based model testing, transparent communication and effective oversight—not only efficient automated decisions.</p>
+  <div class="callout warning"><b>Critical accuracy note:</b> Do not write that the NYDFS proved Apple Card discriminated against women. Its 2021 investigation reported no evidence of unlawful discrimination. The case is relevant because the allegations exposed concerns about transparency, communication and trust.</div>
+ </section>
+
+ <div class="section-head"><div><div class="kicker">Entry 03 · Digital strategy insight</div><h2 id="entry3">Generative AI as a finance-team assistant</h2></div><div class="section-number">03</div></div>
+ <section class="card">
+  <p class="lead">Business question: How might an emerging AI or digital technology transform business strategy?</p>
+  <h3>Strategic opportunity</h3>
+  <p>Generative AI systems can produce and summarise text in response to instructions. In a finance function, an organisation might use an approved system to draft commentary on budget variances, summarise lengthy management reports, explain financial terms for non-specialist managers or prepare a first draft of a monthly performance update. For example, a finance analyst could provide non-confidential, verified figures and ask an AI assistant to organise them into a draft narrative. This may reduce time spent on routine writing and help managers receive information in a more accessible format.</p>
+  <h3>How the workflow should operate</h3>
+  <div class="visual">
+   <div class="visual-head"><strong>Human-in-the-loop finance workflow</strong><span>ARTEFACT 3A · PROCESS DIAGRAM</span></div>
+   <div class="flow"><div class="step">Verified, approved financial data</div><div class="arrow">→</div><div class="step">Generative AI drafts a summary</div><div class="arrow">→</div><div class="step">Finance professional checks figures and context</div><div class="arrow">→</div><div class="step">Approved management report</div></div>
+   <div class="caption">Figure 3. Original workflow diagram. Human verification is a required control before information is used for decisions.</div>
+  </div>
+  <h3>Critical assessment: opportunities and risks</h3>
+  <div class="risk">
+   <div><b>Productivity</b><span>Can speed up first drafts and routine summaries; time saved depends on the quality of prompts and review.</span></div>
+   <div><b>Accuracy</b><span>May generate plausible but incorrect explanations or figures; outputs must be checked against source systems.</span></div>
+   <div><b>Privacy and security</b><span>Confidential payroll, customer or company data should not be entered into unapproved tools.</span></div>
+   <div><b>Skills and dependence</b><span>Staff need AI literacy and financial judgement; over-reliance can weaken scrutiny and expertise.</span></div>
+  </div>
+  <p>Implementation also involves licensing, integration, staff training, governance and monitoring costs. Organisations should define approved use cases, restrict sensitive data, retain records where appropriate, test outputs and make clear who is accountable for the final report. NIST’s Generative AI Profile provides a risk-management resource that organisations can use to identify and manage generative-AI risks across the system lifecycle.</p>
+  <p>Strategically, early and responsible adoption may help a finance team respond more quickly to managers and make financial information easier to use across departments. However, buying an AI tool does not automatically create competitive advantage: competitors may access similar systems, and benefits can disappear if outputs are not trusted or integrated into real workflows. Organisations should begin with a clearly defined, low-risk task, compare the time and quality of work before and after adoption, and expand only when evidence shows a genuine improvement.</p>
+  <p>There are also workforce implications. Routine drafting may change some finance tasks, while demand may increase for employees who can interpret data, challenge AI-generated explanations and communicate with decision-makers. Training should therefore develop both digital confidence and professional judgement rather than encouraging staff to accept automated output without question.</p>
+  <h3>Conclusion</h3>
+  <p>Generative AI could change finance from a mainly reporting-focused function towards faster interpretation and business support. However, its strategic value depends on secure data practices, reliable verification and human accountability. It should assist finance professionals, not replace their responsibility.</p>
+ </section>
+
+ <div class="section-head"><div><div class="kicker">Final component · Approx. 500 words</div><h2 id="reflection">Reflective summary</h2></div><div class="section-number">04</div></div>
+ <section class="card">
+  <p>Developing this portfolio has changed how I understand artificial intelligence and digital management in financial organisations. Before exploring these examples, I mainly associated AI with automation and completing tasks more quickly. I now recognise that AI and digital tools can also influence how organisations interpret information, make decisions, communicate with customers and manage risk. Their impact depends not only on the technology but also on the people, processes and rules surrounding it.</p>
+  <p>The Power BI example helped me understand the practical value of business intelligence. When sales and expense information is separated across different files, managers may find it difficult to identify the reasons behind changes in performance. A dashboard can bring key indicators together and make comparisons easier. I learned, however, that a visual dashboard does not automatically explain what caused a result. Data quality, appropriate measures and the manager’s understanding of the business are essential. I would therefore treat a forecast as an estimate to investigate rather than a certain prediction.</p>
+  <p>The Apple Card case developed my awareness of fairness, transparency and accountability in financial services. The public allegations showed how quickly concerns about automated decisions can affect customer confidence. Studying the regulator’s findings also taught me to distinguish allegations from established facts: the NYDFS investigation did not find evidence of unlawful discrimination. This is an important lesson for critical research because a balanced evaluation must consider the evidence, not simply repeat public claims. I now understand that customers need clear explanations and accessible ways to question decisions that affect them.</p>
+  <p>Exploring generative AI helped me consider both strategic opportunities and practical risks. It may support finance teams by drafting summaries and organising information, allowing employees to focus more on interpretation and advice. At the same time, generated content can be inaccurate, and sharing confidential information with an unapproved tool may create privacy and security problems. This has reinforced the importance of human checking, organisational policies and clear responsibility for final outputs.</p>
+  <p>For my future academic and professional development, I would like to improve my skills in business analytics, financial interpretation and responsible use of AI tools. I will aim to ask not only whether a technology can perform a task, but also whether the data is reliable, who may be affected, what risks could arise and who is accountable. I also recognise that effective implementation requires communication and training, because employees need to understand both the benefits and the limits of a new system. Overall, my main learning is that successful digital management is not simply about adopting the newest technology. It requires a thoughtful balance between innovation, business value, ethical awareness and human judgement.</p>
+  <div class="callout"><b>Personalise before submission:</b> Add one specific example from your own learning, class activity or practical experience. This reflection is a starting draft; your final version should express your genuine learning in your own words.</div>
+ </section>
+
+ <div class="section-head"><div><div class="kicker">Supporting material</div><h2 id="evidence">Visual evidence and source notes</h2></div><div class="section-number">05</div></div>
+ <section class="card">
+  <h3>Original artefacts included in this website</h3>
+  <table class="matrix">
+   <thead><tr><th>Artefact</th><th>What it demonstrates</th><th>How it supports the argument</th></tr></thead>
+   <tbody>
+    <tr><td>Figure 1 · Finance dashboard mock-up</td><td>Revenue, expenses, operating surplus and a simple monthly comparison.</td><td>Shows how a business intelligence dashboard can support monitoring and investigation.</td></tr>
+    <tr><td>Figure 2 · Apple Card timeline</td><td>Sequence from public allegations to regulatory findings and business lessons.</td><td>Separates allegations from findings and highlights transparency and trust.</td></tr>
+    <tr><td>Figure 3 · Human-in-the-loop workflow</td><td>Financial data, AI drafting, human verification and approved reporting.</td><td>Shows controls needed to reduce the risk of unverified AI output.</td></tr>
+   </tbody>
+  </table>
+  <h3>Credible evidence used</h3>
+  <p class="ref-note">The links below support the factual and technical points in the portfolio. Follow your module’s required referencing style and add in-text citations in the format your lecturer expects.</p>
+  <ul class="ref-list">
+   <li><a href="https://learn.microsoft.com/en-us/power-bi/fundamentals/power-bi-overview" target="_blank" rel="noopener">Microsoft Learn — What is Power BI?</a><br><span class="ref-note">Official explanation of Power BI as an analytics platform and its data preparation, reporting, visualisation and sharing workflow.</span></li>
+   <li><a href="https://www.dfs.ny.gov/system/files/documents/2021/03/rpt_202103_apple_card_investigation.pdf" target="_blank" rel="noopener">New York State Department of Financial Services (2021) — Report on Apple Card Investigation</a><br><span class="ref-note">Primary regulatory source for the complaints, investigation and findings discussed in Entry 2.</span></li>
+   <li><a href="https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence" target="_blank" rel="noopener">National Institute of Standards and Technology (2024) — Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile</a><br><span class="ref-note">Risk-management guidance relevant to the governance and oversight discussion in Entry 3.</span></li>
+   <li><a href="https://www.nist.gov/itl/ai-risk-management-framework/ai-risk-management-framework-faqs" target="_blank" rel="noopener">NIST — AI Risk Management Framework FAQs</a><br><span class="ref-note">Overview of trustworthiness characteristics including reliability, security, accountability, transparency, explainability, privacy and fairness.</span></li>
+  </ul>
+  <div class="callout warning"><b>Before handing in:</b> Replace the student details, check your assessment brief and word counts, add your own authentic screenshots if you build the dashboard in Power BI, and make sure your lecturer can access the published GitHub Pages link. The dashboard and diagrams here are original illustrative mock-ups, not screenshots from live software.</div>
+ </section>
+</main>
+<footer><div class="wrap"><p><b>AI in Financial Management · Individual Digital Portfolio</b></p><p>Prepared as an editable student portfolio website. Review, personalise and verify before submission.</p></div></footer>
+</body>
+</html>
